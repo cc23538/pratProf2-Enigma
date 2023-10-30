@@ -1,0 +1,53 @@
+-- Crie um esquema para armazenar frases criptografadas
+-- CREATE DATABASE IF NOT EXISTS criptografia;
+-- USE criptografia;
+
+DROP TABLE frases_criptografadas;
+
+-- Crie uma tabela para armazenar frases criptografadas
+CREATE TABLE IF NOT EXISTS frases_criptografadas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    texto_criptografado VARBINARY(500)
+);
+
+-- Crie uma função para criptografar frases
+DELIMITER $$
+
+CREATE FUNCTION `bd23538`.`criptografar_frase` (texto_de_entrada VARCHAR(255), chave_secreta VARCHAR(255))
+RETURNS VARBINARY(500)
+DETERMINISTIC
+BEGIN
+    DECLARE resultado_criptografado VARBINARY(500);
+    SET resultado_criptografado = AES_ENCRYPT(texto_de_entrada, chave_secreta);
+    RETURN resultado_criptografado;
+END$$
+
+DELIMITER ;
+
+-- Crie uma função para descriptografar frases
+CREATE FUNCTION `bd23538`.`descriptografar_frase` (texto_criptografado VARBINARY(500), chave_secreta VARCHAR(255))
+RETURNS VARCHAR(255)
+DETERMINISTIC
+BEGIN
+    DECLARE resultado_descriptografado VARCHAR(255);
+    SET resultado_descriptografado = AES_DECRYPT(texto_criptografado, chave_secreta);
+    RETURN resultado_descriptografado;
+END$$
+
+DELIMITER ;
+
+-- Inserir frases criptografadas
+INSERT INTO frases_criptografadas (texto_criptografado) VALUES (AES_ENCRYPT('Olá, mundo!', 'chave_secreta'));
+INSERT INTO frases_criptografadas (texto_criptografado) VALUES (AES_ENCRYPT('Isso é um teste.', 'outra_chave'));
+INSERT INTO frases_criptografadas (texto_criptografado) VALUES (AES_ENCRYPT('MySQL é difícil!', 'minha_chave'));
+
+-- Verificar os dados na tabela
+SELECT * FROM frases_criptografadas;
+
+
+-- Consultar frases descriptografadas
+SELECT id, CAST(AES_DECRYPT(texto_criptografado, 'chave_secreta') AS CHAR) AS texto_descriptografado FROM frases_criptografadas;
+SELECT id, CAST(AES_DECRYPT(texto_criptografado, 'outra_chave') AS CHAR) AS texto_descriptografado FROM frases_criptografadas;
+SELECT id, CAST(AES_DECRYPT(texto_criptografado, 'minha_chave') AS CHAR) AS texto_descriptografado FROM frases_criptografadas;
+
+
