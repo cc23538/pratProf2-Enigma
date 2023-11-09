@@ -17,4 +17,7 @@ app.use(
 const rotas = require('../app/rotas/rotas');
 rotas(app);
 
+const rotasCripto = require('../app/ROTAS/rotasCripto');
+rotas(app);
+
 module.exports = app;

@@ -23,7 +23,6 @@ class DAO_clientes{
         });
     }
     criptoEnigmaEJS() {
-        // Substitua esta chamada de exemplo por sua lógica de acesso ao banco de dados e criptografia
         return new Promise((resolve, reject) => {
             // Simulando dados do banco de dados
             const dadosDoBanco = [
@@ -47,81 +46,7 @@ class DAO_clientes{
         });
     }
 
-    Listar(req, res) {
-        return new Promise((resolve, reject) => {
-            const sql = "SELECT * FROM produtos";
-            this._bd.query(sql, function (erro, result) {
-                if (erro) {
-                    console.error("Erro na Listagem : ", erro);
-                    return reject(erro);
-                }
-                resolve(res.json(result));
-            });
-        });
-    }
-
-    Criar(req, res) {
-        return new Promise((resolve, reject) => {
-            const { Codigo, Descricao, DataCriacao } = req.body;
-            const sql = `INSERT INTO produtos (Codigo, Descricao, DataCriacao) VALUES (${Codigo}, '${Descricao}', '${DataCriacao}')`;
-            this._bd.query(sql, function (erro, result) {
-                if (erro) {
-                    console.error("erro na Criação do novo registro : ", erro);
-                    return reject(erro);
-                }
-                resolve(res.json(result));
-            });
-        });
-    }
     
-    Update(req, res) {
-        return new Promise((resolve, reject) => {
-            const { Codigo, Descricao } = req.body;
-            const sql = `UPDATE produtos SET Descricao = '${Descricao}', DataAtualizacao = '${new Date().toISOString()}' WHERE Codigo = ${Codigo}`;
-            this._bd.query(sql, function (erro, result) {
-                if (erro) {
-                    console.error("erro na update : ", erro);
-                    return reject(erro);
-                }
-                resolve(res.json(result));
-            });
-        });
-    }
-
-    GetOne(req, res) {
-        return new Promise((resolve, reject) => {
-            try {
-                const { Codigo } = req.body;
-                const sql = `SELECT * FROM produtos WHERE Codigo = ${Codigo}`;
-                this._bd.query(sql, function (erro, result) {
-                    if (erro) {
-                        console.error("erro na update : ", erro);
-                        reject(erro);
-                    } else {
-                        resolve(res.json(result));
-                    }
-                });
-            } catch (erro) {
-                console.error("erro na update : ", erro);
-                reject(erro);
-            }
-        });
-    }
-
-    Delete(req, res) {
-        return new Promise((resolve, reject) => {
-            const { Codigo } = req.body;
-            const sql = `DELETE FROM produtos WHERE Codigo = ${Codigo}`;
-            this._bd.query(sql, function (erro, result) {
-                if (erro) {
-                    console.error("erro na update : ", erro);
-                    reject(erro);
-                } else {
-                    resolve(res.json(result));
-                }
-            });
-        });
-    }
         
 }
 

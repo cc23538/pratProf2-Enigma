@@ -6,7 +6,7 @@ module.exports =(app) =>{
     });
 
     const clientesController = require("../CONTROLE/CON_clientes");
-    const cliController = new clientesController();
+   const cliController = new clientesController();
 
 
     

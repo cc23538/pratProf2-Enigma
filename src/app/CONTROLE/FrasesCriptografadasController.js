@@ -1,5 +1,6 @@
 const DAO_frases_criptografadas = require("../BD/DAO_frases_criptografadas");
-const bd = require("../../confg/database");
+const bd = require("../../confg/database_sqlServer");
+
 class FrasesCriptografadasController {
     constructor() {
         this.dao = new DAO_frases_criptografadas();
