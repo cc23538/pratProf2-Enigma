@@ -1,0 +1,84 @@
+
+1. Consultar todas as mensagens cifradas por uma determinada máquina Enigma:
+
+SELECT m.mensagem_id, m.texto_mensagem, m.data_envio
+FROM Mensagem m
+JOIN EnigmaMachine em ON m.enigma_id = em.enigma_id
+WHERE em.serial_number = 'SUA_SERIE_ENIGMA';
+
+2. Stored Procedure para Inserir Mensagem de Forma Segura:
+
+CREATE PROCEDURE InserirMensagemSegura
+    @texto_mensagem VARCHAR(MAX),
+    @data_envio DATETIME,
+    @enigma_serial VARCHAR(50)
+AS
+BEGIN
+    DECLARE @enigma_id INT;
+
+    SELECT @enigma_id = enigma_id
+    FROM EnigmaMachine
+    WHERE serial_number = @enigma_serial;
+
+    INSERT INTO Mensagem (texto_mensagem, data_envio, enigma_id)
+    VALUES (@texto_mensagem, @data_envio, @enigma_id);
+END;
+
+3. Adicionar Índice à Coluna serial_number da Tabela EnigmaMachine:
+
+CREATE INDEX idx_enigma_serial ON EnigmaMachine (serial_number);
+Views:
+View para Exibir Detalhes de Todas as Mensagens:
+sql
+Copy code
+CREATE VIEW TodasMensagens AS
+SELECT
+    m.mensagem_id,
+    m.texto_mensagem,
+    m.data_envio,
+    em.serial_number AS enigma_serial
+FROM Mensagem m
+JOIN EnigmaMachine em ON m.enigma_id = em.enigma_id;
+
+4. Trigger para Atualizar a Configuração Inicial do Rotor ao Inserir uma Nova Máquina Enigma:
+
+CREATE TRIGGER AtualizarConfigRotor
+ON EnigmaMachine
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @enigma_id INT;
+    DECLARE @rotor_id INT;
+
+    SELECT @enigma_id = enigma_id, @rotor_id = rotor_id
+    FROM inserted;
+
+    UPDATE Rotor
+    SET initial_configuration = 'NOVA_CONFIGURACAO'
+    WHERE rotor_id = @rotor_id;
+END;
+
+5. View para Exibir Todas as Máquinas Enigma e Suas Mensagens:
+
+CREATE VIEW EnigmaMachinesAndMessages AS
+SELECT
+    em.enigma_id,
+    em.serial_number,
+    em.model,
+    m.mensagem_id,
+    m.texto_mensagem,
+    m.data_envio
+FROM EnigmaMachine em
+LEFT JOIN Mensagem m ON em.enigma_id = m.enigma_id;
+
+6. Trigger para Registrar Alterações nas Mensagens:
+
+CREATE TRIGGER RegistroAlteracaoMensagem
+ON Mensagem
+AFTER UPDATE
+AS
+BEGIN
+    INSERT INTO LogAlteracoesMensagem (mensagem_id, data_alteracao)
+    SELECT i.mensagem_id, GETDATE()
+    FROM inserted i;
+END;
