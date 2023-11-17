@@ -1,93 +1,134 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Exemplo de Criptografia e Descriptografia</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enigma</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1 {
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin: 0;
+        }
+
+        table {
+            width: 60%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #3498db;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #2980b9;
+            color: #fff;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #ecf0f5;
+        }
+
+        form {
+            width: 60%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        form label,
+        form input {
+            width: calc(48% - 10px);
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        form input {
+            padding: 10px;
+            border: 1px solid #3498db;
+            border-radius: 4px;
+        }
+
+        form button {
+            width: 30%;
+            padding: 10px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            align-self: flex-end;
+        }
+
+        form button:hover {
+            background-color: #2980b9;
+        }
+
+        p {
+            text-align: center;
+            color: #3498db;
+            margin: 20px 0;
+        }
+    </style>
 </head>
 
-<body class="p-4">
-    <div class="container">
-        <h2 class="mb-4">Enigma - Criptografia e Descriptografia de Frases</h2>
+<body>
+    <h1>Frases Criptografadas</h1>
 
-        <div class="form-group">
-            <label for="frase">Digite a frase:</label>
-            <input type="text" class="form-control" id="frase">
-        </div>
+    <form id="form-frase" action="/adicionar-frase" method="post">
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id" required>
 
-        <div class="mt-3">
-            <button class="btn btn-primary mr-2" onclick="criptografar()">Criptografar</button>
-            <button class="btn btn-secondary" onclick="descriptografar()">Descriptografar</button>
-            <button class="btn btn-success ml-2" onclick="salvarFrase()">Salvar</button>
-        </div>
+        <label for="textoCriptografado">Texto Criptografado:</label>
+        <input type="text" id="textoCriptografado" name="textoCriptografado" required>
 
-        <div class="mt-3 form-group">
-            <label for="resultado">Resultado:</label>
-            <textarea class="form-control" id="resultado" rows="4"></textarea>
-        </div>
+        <button type="submit">Adicionar Frase</button>
+    </form>
 
-        <div class="mt-5">
-            <h4>Frases Salvas:</h4>
-            <table class="table">
-                <thead>
+    <% if (frases && frases.length > 0) { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Texto Descriptografado</th>
+                </tr>
+            </thead>
+            <tbody id="frases-lista">
+                <% for (var i = 0; i < frases.length; i++) { %>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Frase</th>
-                        <th scope="col">Ações</th>
+                        <td><%= frases[i].id %></td>
+                        <td><%= frases[i].texto_descriptografado %></td>
                     </tr>
-                </thead>
-                <tbody id="frases-lista">
-                    <% for (var i = 0; i < frases.length; i++) { %>
-                        <tr>
-                            <td><%= i + 1 %></td>
-                            <td><%= frases[i].frase %></td>
-                            <td>
-                                <button class="btn btn-danger btn-sm" onclick="excluirFrase('<%= frases[i]._id %>')">Excluir</button>
-                                <button class="btn btn-primary btn-sm" onclick="editarFrase('<%= frases[i]._id %>','<%= frases[i].frase %>')">Editar</button>
-                            </td>
-                        </tr>
-                    <% } %>
-                </tbody>
-            </table>
-        </div>
-    </div>
+                <% } %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>No frases available.</p>
+    <% } %>
 
-    <!-- Bootstrap JS (Popper.js and Bootstrap JS) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script>
-        function criptografar() {
-            var frase = document.getElementById('frase').value;
-            var fraseCriptografada = CryptoJS.AES.encrypt(frase, "chave_secreta").toString();
-            document.getElementById('resultado').value = fraseCriptografada;
-        }
-
-        function descriptografar() {
-            var fraseCriptografada = document.getElementById('resultado').value;
-            var fraseDescriptografada = CryptoJS.AES.decrypt(fraseCriptografada, "chave_secreta").toString(CryptoJS.enc.Utf8);
-            document.getElementById('resultado').value = fraseDescriptografada;
-        }
-
-        function salvarFrase() {
-            var novaFrase = document.getElementById('resultado').value;
-            // Aqui você precisará enviar uma solicitação ao servidor para salvar a frase no banco de dados.
-            // Use uma biblioteca como Axios ou o objeto fetch para fazer uma solicitação POST ao servidor.
-        }
-
-        function excluirFrase(id) {
-            // Aqui você precisará enviar uma solicitação ao servidor para excluir a frase do banco de dados com o ID fornecido.
-            // Use uma biblioteca como Axios ou o objeto fetch para fazer uma solicitação DELETE ao servidor.
-        }
-
-        function editarFrase(id, frase) {
-            // Aqui você precisará preencher o campo 'frase' com a frase fornecida e permitir que o usuário a edite.
-            // Após a edição, envie uma solicitação PUT ao servidor com o ID e a nova frase para atualização no banco de dados.
-        }
-    </script>
 </body>
 
 </html>

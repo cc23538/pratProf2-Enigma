@@ -1,5 +1,4 @@
 
-
 -- Tabela EnigmaMachine
 CREATE TABLE EnigmaMachine (
     enigma_id INT PRIMARY KEY,
