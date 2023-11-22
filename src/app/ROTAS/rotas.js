@@ -16,14 +16,14 @@ module.exports = (app) => {
     app.get("/home", (req, res) => {
         console.log("Utilizando rota /home");
         res.send("Olá a console");
-    });
+    }); //ok
 
-    app.get("/enigma", criptoController.exibeDadosEJS());
+    app.get("/enigma", criptoController.exibeDadosEJS()); //ok
+    app.get("/inserir", criptoController.InserirDados()); //ok
 
-    app.get("/enigma", criptoController.IncluirDadosEJS());
-    app.get("/enigma", criptoController.editarDadosEJS());
-    app.get("/enigma", criptoController.excluirDadosEJS);
 
-    
+    app.get("/editar", criptoController.editarDadosEJS());
+    app.get("/excluir", criptoController.excluirDadosEJS);
+
 
 }

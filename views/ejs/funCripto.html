@@ -35,20 +35,9 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Frase</th>
-                        <th scope="col">Ações</th>
                     </tr>
                 </thead>
-                <tbody id="frases-lista">
-                    <% for (var i = 0; i < frases.length; i++) { %>
-                        <tr>
-                            <td><%= i + 1 %></td>
-                            <td><%= frases[i].frase %></td>
-                            <td>
-                                <button class="btn btn-danger btn-sm" onclick="excluirFrase('<%= frases[i]._id %>')">Excluir</button>
-                                <button class="btn btn-primary btn-sm" onclick="editarFrase('<%= frases[i]._id %>','<%= frases[i].frase %>')">Editar</button>
-                            </td>
-                        </tr>
-                    <% } %>
+                <tbody id="frases-lista"> 
                 </tbody>
             </table>
         </div>
@@ -74,20 +63,16 @@
 
         function salvarFrase() {
             var novaFrase = document.getElementById('resultado').value;
-            // Aqui você precisará enviar uma solicitação ao servidor para salvar a frase no banco de dados.
-            // Use uma biblioteca como Axios ou o objeto fetch para fazer uma solicitação POST ao servidor.
-        }
-
-        function excluirFrase(id) {
-            // Aqui você precisará enviar uma solicitação ao servidor para excluir a frase do banco de dados com o ID fornecido.
-            // Use uma biblioteca como Axios ou o objeto fetch para fazer uma solicitação DELETE ao servidor.
-        }
-
-        function editarFrase(id, frase) {
-            // Aqui você precisará preencher o campo 'frase' com a frase fornecida e permitir que o usuário a edite.
-            // Após a edição, envie uma solicitação PUT ao servidor com o ID e a nova frase para atualização no banco de dados.
+            var tabela = document.getElementById('frases-lista');
+            var numeroLinhas = tabela.rows.length;
+            var novaLinha = tabela.insertRow(numeroLinhas);
+            var celula1 = novaLinha.insertCell(0);
+            var celula2 = novaLinha.insertCell(1);
+            celula1.innerHTML = numeroLinhas;
+            celula2.innerHTML = novaFrase;
         }
     </script>
 </body>
 
 </html>
+

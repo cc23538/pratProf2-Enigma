@@ -8,7 +8,7 @@ class DAO_enigma{
     //metodo 
     listarEJS() {
         return new Promise((resolve, reject) => {
-            var sql = "SELECT id, CAST(AES_DECRYPT(texto_criptografado, 'chave secreta') AS CHAR) AS texto_descriptografado FROM frases_criptografadas;";
+            const sql = "SELECT * FROM frases_criptografadas;";
             this._bd.query(sql, function (erro, recordset) { // conexão com o banco
                 if (erro) {
                     console.log(erro);
@@ -18,7 +18,7 @@ class DAO_enigma{
             });
         });
     }
-    
+    /*
     incluirEJS(data) {
         return new Promise((resolve, reject) => {
             var sql = 'INSERT INTO frases_criptografadas (texto_criptografado) VALUES (AES_ENCRYPT(?, ?));';
@@ -30,7 +30,20 @@ class DAO_enigma{
                 resolve(recordset);
             });
         });
-    }
+    }*/
+
+    incluirEJS(data) {
+        return new Promise((resolve, reject) => {
+          const sql = 'INSERT INTO frases_criptografadas (texto_criptografado) VALUES (AES_ENCRYPT(?, ?));';
+          this._bd.query(sql, data, function (erro, recordset) {
+            if (erro) {
+              console.error(erro);
+              return reject("tentativa de incluir frases falhou!!"); 
+            }
+            resolve(recordset);
+          });
+        });
+      }
 
 
     editarEJS(id, newData) {

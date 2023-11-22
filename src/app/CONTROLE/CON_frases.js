@@ -15,19 +15,24 @@ class CON_enigma{
                 .catch(erro => console.log(erro));
         }
     }
+    InserirDados() {
+        return function(req, res) {
+          const criptoDAO = new enigmaDAO(bd); // Instância da classe
+          const dadosParaInserir = ['Texto Criptografado', 'Chave Secreta'];
+      
+          criptoDAO.incluirEJS(dadosParaInserir)
+            .then((resultados) => {
+              console.log(resultados);
+              res.render('../views/ejs/inserir', { frases: resultados });
+            })
+            .catch((erro) => {
+              console.error('Erro ao inserir frases:', erro);
+            });
+        };
+      }
 
-    IncluirDadosEJS(){
-        return function(req, res){
-            const criptoDAO = new enigmaDAO (bd);//instancia da classe
-            criptoDAO.incluirEJS()
-                .then((resultados) =>{
-                    console.log(resultados);
-                    res.render('../views/ejs/enigma', {frases: resultados});
-                })
-                .catch(erro => console.log(erro));
-        }
-    }
 
+      
     editarDadosEJS(){
         return function(req, res){
             const criptoDAO = new enigmaDAO (bd);//instancia da classe

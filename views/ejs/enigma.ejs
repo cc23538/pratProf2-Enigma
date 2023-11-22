@@ -94,41 +94,28 @@
         }
     </style>
 </head>
-
-<body>
-    <h1>Frases Criptografadas</h1>
-
-    <form id="form-frase" action="/adicionar-frase" method="post">
-        <label for="id">ID:</label>
-        <input type="text" id="id" name="id" required>
-
-        <label for="textoCriptografado">Texto Criptografado:</label>
-        <input type="text" id="textoCriptografado" name="textoCriptografado" required>
-
-        <button type="submit">Adicionar Frase</button>
-    </form>
-
-    <% if (frases && frases.length > 0) { %>
+    <body>
+        <h1>Frases Criptografadas</h1>
         <table>
-            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Texto Descriptografado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (var frase of frases) { %>
                 <tr>
-                    <th>ID</th>
-                    <th>Texto Descriptografado</th>
+                    <td><%= frase.id %></td>
+                    <td><%= frase.texto_criptografado %></td>
                 </tr>
-            </thead>
-            <tbody id="frases-lista">
-                <% for (var i = 0; i < frases.length; i++) { %>
-                    <tr>
-                        <td><%= frases[i].id %></td>
-                        <td><%= frases[i].texto_descriptografado %></td>
-                    </tr>
-                <% } %>
-            </tbody>
+            <% } %>
+        </tbody>
         </table>
-    <% } else { %>
-        <p>No frases available.</p>
-    <% } %>
 
+    </body>
+    
+    </html>
+    
 </body>
 
 </html>
