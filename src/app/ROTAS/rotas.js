@@ -15,15 +15,21 @@ module.exports = (app) => {
     //criando minhas rotas
     app.get("/home", (req, res) => {
         console.log("Utilizando rota /home");
-        res.send("Olá a console");
+        res.send("Rafaela F. Dos Santos - RA 23538 -- Rebeca Samara Oliveira da Rocha - RA 22587");
     }); //ok
 
     app.get("/enigma", criptoController.exibeDadosEJS()); //ok
+    
     app.get("/inserir", criptoController.InserirDados()); //ok
 
 
-    app.get("/editar", criptoController.editarDadosEJS());
-    app.get("/excluir", criptoController.excluirDadosEJS);
+
+    //app.get('/editar/:idFrase',  criptoController.editarDadosEJS);
+    //app.get("/editar", criptoController.editarDadosEJS());
+
+
+    //app.get('/excluir/:idFrase', criptoController.excluirDadosEJS);
+    //app.get("/excluir", criptoController.excluirDadosEJS);
 
 
 }

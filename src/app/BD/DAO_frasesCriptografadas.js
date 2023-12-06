@@ -6,9 +6,10 @@ class DAO_enigma{
     }
 
     //metodo 
+    
     listarEJS() {
         return new Promise((resolve, reject) => {
-            const sql = "SELECT * FROM frases_criptografadas;";
+            const sql = 'SELECT * FROM frases_criptografadas;';
             this._bd.query(sql, function (erro, recordset) { // conexão com o banco
                 if (erro) {
                     console.log(erro);
@@ -45,31 +46,31 @@ class DAO_enigma{
         });
       }
 
-
-    editarEJS(id, newData) {
-    return new Promise((resolve, reject) => {
-        var sql = 'UPDATE frases_criptografadas SET ? WHERE id = ?';
-            this._bd.query(sql, [newData, id], function (erro, recordset) {
-                if (erro) {
-                    console.log(erro);
-                    return reject("Tentativa de editar frases falhou!!");
-                }
-                resolve(recordset);
-            });
-        });
-    }
-    excluirEJS(id) {
+      editarEJS(id, newData) {
         return new Promise((resolve, reject) => {
-            var sql = 'DELETE FROM frases_criptografadas WHERE id = ?';
-            this._bd.query(sql, [id], function (erro, recordset) {
-                if (erro) {
-                    console.log(erro);
-                    return reject("Falha ao tentar excluir uma frase!!");
-                }
-                resolve(recordset);
+            var sql = 'UPDATE frases_criptografadas SET ? WHERE id = ?';
+                this._bd.query(sql, [newData, id], function (erro, recordset) {
+                    if (erro) {
+                        console.log(erro);
+                        return reject("Tentativa de editar frases falhou!!");
+                    }
+                    resolve(recordset);
+                });
             });
-        });
-    }
+        }
+        excluirEJS(id) {
+            return new Promise((resolve, reject) => {
+                var sql = 'DELETE FROM frases_criptografadas WHERE id = ?';
+                this._bd.query(sql, [id], function (erro, recordset) {
+                    if (erro) {
+                        console.log(erro);
+                        return reject("Falha ao tentar excluir uma frase!!");
+                    }
+                    resolve(recordset);
+                });
+            });
+        }
+
 
 }
 

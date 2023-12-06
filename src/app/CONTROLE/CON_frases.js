@@ -15,6 +15,7 @@ class CON_enigma{
                 .catch(erro => console.log(erro));
         }
     }
+
     InserirDados() {
         return function(req, res) {
           const criptoDAO = new enigmaDAO(bd); // Instância da classe
@@ -29,21 +30,19 @@ class CON_enigma{
               console.error('Erro ao inserir frases:', erro);
             });
         };
-      }
-
-
-      
+    }
     editarDadosEJS(){
-        return function(req, res){
-            const criptoDAO = new enigmaDAO (bd);//instancia da classe
-            criptoDAO.editarEJS()
-                .then((resultados) =>{
-                    console.log(resultados);
-                    res.render('../views/ejs/enigma', {frases: resultados});
-                })
-                .catch(erro => console.log(erro));
+      return function(req, res){
+          const criptoDAO = new enigmaDAO (bd);//instancia da classe
+          criptoDAO.editarEJS()
+              .then((resultados) =>{
+                  console.log(resultados);
+                  res.render('../views/ejs/enigma', {frases: resultados});
+              })
+              .catch(erro => console.log(erro));
         }
     }
+
     excluirDadosEJS(idFrase){
         return function(req, res){
             const criptoDAO = new enigmaDAO (bd); // instancia da classe
@@ -56,7 +55,6 @@ class CON_enigma{
         }
     }
 
-    
 
 
 }
