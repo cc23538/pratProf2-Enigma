@@ -1,5 +1,5 @@
 const { SerialPort } = require('serialport');
-const arduino = new SerialPort({path:'COM4', baudRate: 9600});
+const arduino = new SerialPort({path:'COM1', baudRate: 9600});
 
 function ligarLed1(){
     arduino.write('A');
@@ -19,3 +19,6 @@ function desligarLed2(){
 }
 setTimeout(ligarLed1, 2000);
 setTimeout(desligarLed1, 4000);
+
+
+//https://wokwi.com/projects/383414196277012481

@@ -11,7 +11,7 @@ connection.connect(function (erro) {
     if(erro)
         console.log("Erro na conexão com o Banco NODEJS");
     else
-        console.log("Conxão com bando nodejs realizada com sucesso");
+        console.log("Conexão com bando nodejs realizada com sucesso");
 });
 
 module.exports = connection;

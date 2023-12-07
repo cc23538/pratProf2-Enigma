@@ -17,7 +17,7 @@ public class Main {
             DAOEnigma daoEnigma = new DAOEnigma(connection);
             ControllerEnigma controllerEnigma = new ControllerEnigma(daoEnigma);
 
- controllerEnigma.exibeDadosEJS();
+            controllerEnigma.exibeDadosEJS();
 
             // Inserindo uma nova frase criptografada
             controllerEnigma.inserirDadosEJS("Nova frase criptografada", "Chave secreta");

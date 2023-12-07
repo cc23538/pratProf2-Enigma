@@ -26,7 +26,7 @@ public class ControllerEnigma {
         try {
             daoEnigma.incluirEJS(textoCriptografado, chaveSecreta);
             System.out.println("Frase criptografada inserida com sucesso!");
-            // ...
+            
         } catch (SQLException e) {
             System.err.println("Erro ao inserir frase: " + e.getMessage());
         }
@@ -54,9 +54,9 @@ public class ControllerEnigma {
         }
     }
 
-////////// sem id
+    ////////// sem id
 
- public void excluirTodasEJS() throws SQLException {
+    public void excluirTodasEJS() throws SQLException {
         String sql = "DELETE FROM frases_criptografadas";
 
         try (Statement statement = connection.createStatement()) {
@@ -68,7 +68,7 @@ public class ControllerEnigma {
         }
     }
 
-   public void inserirEJS(String textoCriptografado, String chaveSecreta) throws SQLException {
+    public void inserirEJS(String textoCriptografado, String chaveSecreta) throws SQLException {
         String sql = "INSERT INTO frases_criptografadas (texto_criptografado) VALUES (AES_ENCRYPT(?, ?))";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -96,7 +96,7 @@ public class ControllerEnigma {
         }
     }
 
-     public List<String> obterTodasEJS() throws SQLException {
+    public List<String> obterTodasEJS() throws SQLException {
         List<String> frases = new ArrayList<>();
         String sql = "SELECT texto_criptografado FROM frases_criptografadas";
 
